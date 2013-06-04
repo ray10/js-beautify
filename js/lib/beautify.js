@@ -182,6 +182,7 @@
         opt.break_chained_methods = (options.break_chained_methods === undefined) ? false : options.break_chained_methods;
         opt.max_preserve_newlines = (options.max_preserve_newlines === undefined) ? 0 : parseInt(options.max_preserve_newlines, 10);
         opt.space_in_paren = (options.space_in_paren === undefined) ? false : options.space_in_paren;
+        opt.space_in_paren_collapse_literal = (options.space_in_paren_collapse_literal === undefined) ? false : options.space_in_paren_collapse_literal;
         opt.jslint_happy = (options.jslint_happy === undefined) ? false : options.jslint_happy;
         opt.keep_array_indentation = (options.keep_array_indentation === undefined) ? false : options.keep_array_indentation;
         opt.space_before_conditional= (options.space_before_conditional === undefined) ? true : options.space_before_conditional;
@@ -929,7 +930,7 @@
                     }
                     set_mode(MODE.Expression);
                     print_token();
-                    if (opt.space_in_paren) {
+                    if (opt.space_in_paren || opt.space_in_paren_collapse_literal) {
                         output_space_before_token = true;
                     }
                     return;
@@ -991,7 +992,7 @@
             }
 
             print_token();
-            if (opt.space_in_paren) {
+            if (opt.space_in_paren || opt.space_in_paren_collapse_literal) {
                     output_space_before_token = true;
             }
 
@@ -1009,8 +1010,14 @@
             if (token_text === ']' && is_array(flags.mode) && flags.multiline_array && !opt.keep_array_indentation) {
                 print_newline();
             }
-            if (opt.space_in_paren) {
+            if (opt.space_in_paren || opt.space_in_paren_collapse_literal) {
                     output_space_before_token = true;
+            }
+            if (token_text === ']' && flags.last_text === '[' && opt.space_in_paren_collapse_literal) {
+                output_space_before_token = false;
+            }
+            if (token_text === ')' && (flags.last_text === '(' || flags.last_text === '}') && opt.space_in_paren_collapse_literal) {
+                output_space_before_token = false;
             }
             if (token_text === ']' && opt.keep_array_indentation) {
                 print_token();
@@ -1063,6 +1070,10 @@
                         }
                     }
                 }
+            }
+
+            if (flags.last_text === '(' && opt.space_in_paren_collapse_literal) {
+                output_space_before_token = false;
             }
             print_token();
             indent();
@@ -1161,6 +1172,8 @@
                 } else if (last_type === 'TK_OPERATOR' || flags.last_text === '=') {
                     // foo = function
                     output_space_before_token = true;
+                } else if (flags.last_text === '(' && opt.space_in_paren_collapse_literal) {
+                    output_space_before_token = false;
                 } else if (is_expression(flags.mode)) {
                     // (function
                 } else {
