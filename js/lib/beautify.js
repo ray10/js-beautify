@@ -1042,6 +1042,13 @@
         }
 
         function handle_start_block() {
+            // if ((flags.last_text === '(' || flags.last_text === '[' ) && opt.no_wrapped_reindent) {
+
+            if (flags.last_text === '(' && opt.no_wrapped_reindent) {
+                deindent();
+            } else if (flags.last_text === '[' && opt.no_wrapped_reindent) {
+                print_newline();
+            }
             set_mode(MODE.BlockStatement);
 
             var empty_braces = is_next('}');
@@ -1081,9 +1088,7 @@
                 output_space_before_token = false;
             }
             print_token();
-            if (! (flags.last_text === '(' && opt.no_wrapped_reindent)) {
-                indent();
-            }
+            indent();
         }
 
         function handle_end_block() {
@@ -1111,9 +1116,6 @@
                         print_newline();
                     }
                 }
-            }
-            if (opt.no_wrapped_reindent) {
-                deindent();
             }
             print_token();
         }

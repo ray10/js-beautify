@@ -406,6 +406,8 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
         bt('({a:1,b:2})', '({\n        a: 1,\n        b: 2\n    })');
         opts.no_wrapped_reindent = true;
         bt('({a:1,b:2})', '({\n    a: 1,\n    b: 2\n})');
+        bt('[{a:1,b:2}]', '[\n    {\n        a: 1,\n        b: 2\n    }\n]');
+        bt('function(){return a;}', 'function() {\n    return a;\n}');
         opts.no_wrapped_reindent = false;
 
         opts.preserve_newlines = false;
