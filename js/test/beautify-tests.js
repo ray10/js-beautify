@@ -7,6 +7,7 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
     var opts = {
         indent_size: 4,
         indent_char: ' ',
+        no_wrapped_reindent: false,
         preserve_newlines: true,
         jslint_happy: false,
         keep_array_indentation: false,
@@ -402,8 +403,9 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
         opts.indent_size = 4;
         opts.indent_char = ' ';
 
+        bt('({a:1,b:2})', '({\n        a: 1,\n        b: 2\n    })');
         opts.no_wrapped_reindent = true;
-        bt('{a:1,b:2}', '{\n    a: 1,\n    b: 2\n}');
+        bt('({a:1,b:2})', '({\n    a: 1,\n    b: 2\n})');
         opts.no_wrapped_reindent = false;
 
         opts.preserve_newlines = false;

@@ -402,7 +402,7 @@
 
                     print_indent_string(flags.indentation_level +
                         (flags.var_line && flags.var_line_reindented ? 1 : 0) +
-                        (output_wrapped && !opt.no_wrapped_reindent ? 1 : 0));
+                        (output_wrapped ? 1 : 0));
                 }
             }
         }
@@ -1081,7 +1081,9 @@
                 output_space_before_token = false;
             }
             print_token();
-            indent();
+            if (! (flags.last_text === '(' && opt.no_wrapped_reindent)) {
+                indent();
+            }
         }
 
         function handle_end_block() {
@@ -1109,6 +1111,9 @@
                         print_newline();
                     }
                 }
+            }
+            if (opt.no_wrapped_reindent) {
+                deindent();
             }
             print_token();
         }
