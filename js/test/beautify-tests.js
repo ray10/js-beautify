@@ -385,6 +385,12 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
         bt('if (1 + foo() && bar(baz()) / 2) one()\ntwo()\nthree()');
         bt('if (1 + foo() && bar(baz()) / 2) one();\ntwo();\nthree();');
 
+        opts.newline_vars = true;
+        bt("var a2, b2, c2, d2 = 0, c = function() {}, d = '';", "var a2,\n    b2,\n    c2,\n    d2 = 0,\n    c = function() {},\n    d = '';");
+        bt("var a2, b2, c2, d2 = 0, c = function() {},\nd = '';", "var a2,\n    b2,\n    c2,\n    d2 = 0,\n    c = function() {},\n    d = '';");
+        bt('var\na2,\nb2,\nc2, d2 = 0;', 'var\n    a2,\n    b2,\n    c2,\n    d2 = 0;');
+        opts.newline_vars = false;
+
         opts.indent_size = 1;
         opts.indent_char = ' ';
         bt('{ one_char() }', "{\n one_char()\n}");
@@ -407,6 +413,7 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
         opts.no_wrapped_reindent = true;
         bt('({a:1,b:2})', '({\n    a: 1,\n    b: 2\n})');
         bt('[{a:1,b:2}]', '[\n    {\n        a: 1,\n        b: 2\n    }\n]');
+        bt('(z,{a:1,b:2})', '(z, {\n    a: 1,\n    b: 2\n})');
         bt('function(){return a;}', 'function() {\n    return a;\n}');
         opts.no_wrapped_reindent = false;
 

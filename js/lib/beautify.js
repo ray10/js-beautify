@@ -185,6 +185,7 @@
         opt.space_in_paren = (options.space_in_paren === undefined) ? false : options.space_in_paren;
         opt.space_in_paren_collapse_literal = (options.space_in_paren_collapse_literal === undefined) ? false : options.space_in_paren_collapse_literal;
         opt.jslint_happy = (options.jslint_happy === undefined) ? false : options.jslint_happy;
+        opt.newline_vars = (options.newline_vars === undefined) ? false : options.newline_vars;
         opt.keep_array_indentation = (options.keep_array_indentation === undefined) ? false : options.keep_array_indentation;
         opt.space_before_conditional= (options.space_before_conditional === undefined) ? true : options.space_before_conditional;
         opt.unescape_strings = (options.unescape_strings === undefined) ? false : options.unescape_strings;
@@ -1044,7 +1045,7 @@
         function handle_start_block() {
             // if ((flags.last_text === '(' || flags.last_text === '[' ) && opt.no_wrapped_reindent) {
 
-            if (flags.last_text === '(' && opt.no_wrapped_reindent) {
+            if ((flags.last_text === '(' || flags.last_text === ',') && opt.no_wrapped_reindent) {
                 deindent();
             } else if (flags.last_text === '[' && opt.no_wrapped_reindent) {
                 print_newline();
@@ -1378,7 +1379,9 @@
 
                 print_token();
 
-                if (flags.var_line_tainted) {
+                if (opt.newline_vars) {
+                    print_newline();
+                } else if (flags.var_line_tainted) {
                     flags.var_line_tainted = false;
                     print_newline();
                 } else {
