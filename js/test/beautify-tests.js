@@ -402,6 +402,10 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
         opts.indent_size = 4;
         opts.indent_char = ' ';
 
+        opts.no_wrapped_reindent = true;
+        bt('{a:1,b:2}', '{\n    a: 1,\n    b: 2\n}');
+        opts.no_wrapped_reindent = false;
+
         opts.preserve_newlines = false;
 
         bt('var\na=dont_preserve_newlines;', 'var a = dont_preserve_newlines;');

@@ -178,6 +178,7 @@
 
         opt.indent_size = options.indent_size ? parseInt(options.indent_size, 10) : 4;
         opt.indent_char = options.indent_char ? options.indent_char : ' ';
+        opt.no_wrapped_reindent = options.no_wrapped_reindent ? options.no_wrapped_reindent : false;
         opt.preserve_newlines = (options.preserve_newlines === undefined) ? true : options.preserve_newlines;
         opt.break_chained_methods = (options.break_chained_methods === undefined) ? false : options.break_chained_methods;
         opt.max_preserve_newlines = (options.max_preserve_newlines === undefined) ? 0 : parseInt(options.max_preserve_newlines, 10);
@@ -401,7 +402,7 @@
 
                     print_indent_string(flags.indentation_level +
                         (flags.var_line && flags.var_line_reindented ? 1 : 0) +
-                        (output_wrapped ? 1 : 0));
+                        (output_wrapped && !opt.no_wrapped_reindent ? 1 : 0));
                 }
             }
         }
