@@ -947,6 +947,10 @@
                     }
                 }
 
+                if (flags.last_text === '(' && opt.space_in_paren_collapse_literal) {
+                    output_space_before_token = false;
+                }
+
             } else {
                 if  (flags.last_text === 'for') {
                     set_mode(MODE.ForInitializer);
@@ -1016,7 +1020,7 @@
             if (token_text === ']' && flags.last_text === '[' && opt.space_in_paren_collapse_literal) {
                 output_space_before_token = false;
             }
-            if (token_text === ')' && (flags.last_text === '(' || flags.last_text === '}') && opt.space_in_paren_collapse_literal) {
+            if (token_text === ')' && (flags.last_text === '(' || flags.last_text === '}' || flags.last_text === ']') && opt.space_in_paren_collapse_literal) {
                 output_space_before_token = false;
             }
             if (token_text === ']' && opt.keep_array_indentation) {

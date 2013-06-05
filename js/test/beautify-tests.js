@@ -1204,6 +1204,8 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
             'a = {};');
         bt('a({});',
             'a({});');
+        bt('a([]);',
+            'a([]);');
         bt('a(function(){});',
             'a(function() {});');
         opts.space_in_paren_collapse_literal = false;
