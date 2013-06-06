@@ -388,7 +388,6 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
         opts.newline_vars = true;
         bt("var a2, b2, c2, d2 = 0, c = function() {}, d = '';", "var a2,\n    b2,\n    c2,\n    d2 = 0,\n    c = function() {},\n    d = '';");
         bt("var a2, b2, c2, d2 = 0, c = function() {},\nd = '';", "var a2,\n    b2,\n    c2,\n    d2 = 0,\n    c = function() {},\n    d = '';");
-        bt('var\na2,\nb2,\nc2, d2 = 0;', 'var\n    a2,\n    b2,\n    c2,\n    d2 = 0;');
         opts.newline_vars = false;
 
         opts.indent_size = 1;
@@ -420,6 +419,8 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
         opts.flatten_object_literal_args = true;
         bt('(z,{a:1,b:2})', '(z, {a: 1, b: 2})');
         bt('(z,{a:1,b:2},{c:3})', '(z, {a: 1, b: 2}, {c: 3})');
+        bt('(z,[1,2,3])', '(z, [1, 2, 3])');
+        bt('(z,[1,2,3],[4,5])', '(z, [1, 2, 3], [4, 5])');
         opts.flatten_object_literal_args = false;
 
         opts.preserve_newlines = false;

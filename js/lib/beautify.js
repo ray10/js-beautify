@@ -1049,8 +1049,6 @@
         }
 
         function handle_start_block() {
-            // if ((flags.last_text === '(' || flags.last_text === '[' ) && opt.no_wrapped_reindent) {
-
             if ((flags.last_text === '(' || flags.last_text === ',') && opt.no_wrapped_reindent) {
                 deindent();
             } else if (flags.last_text === '[' && opt.no_wrapped_reindent) {
@@ -1313,6 +1311,7 @@
             } else if (prefix === 'SPACE') {
                 output_space_before_token = true;
             }
+
             print_token();
             flags.last_word = token_text;
 
