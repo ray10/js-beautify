@@ -152,7 +152,8 @@
                 in_case: false, // we're on the exact line with "case 0:"
                 case_body: false, // the indented case-action block
                 indentation_level: next_indent_level,
-                ternary_depth: 0
+                ternary_depth: 0,
+                flatten: flags_base ? flags_base.flatten : false,
             }
             return next_flags;
         }
@@ -179,6 +180,7 @@
         opt.indent_size = options.indent_size ? parseInt(options.indent_size, 10) : 4;
         opt.indent_char = options.indent_char ? options.indent_char : ' ';
         opt.no_wrapped_reindent = options.no_wrapped_reindent ? options.no_wrapped_reindent : false;
+        opt.flatten_object_literal_args = options.flatten_object_literal_args ? options.flatten_object_literal_args : false;
         opt.preserve_newlines = (options.preserve_newlines === undefined) ? true : options.preserve_newlines;
         opt.break_chained_methods = (options.break_chained_methods === undefined) ? false : options.break_chained_methods;
         opt.max_preserve_newlines = (options.max_preserve_newlines === undefined) ? 0 : parseInt(options.max_preserve_newlines, 10);
@@ -385,8 +387,12 @@
                 return; // no newline on start of file
             }
 
-            if (force_newline || !just_added_newline()) {
+            if ((force_newline || !just_added_newline()) && !flags.flatten) {
                 output.push("\n");
+            }
+
+            if (flags.mode === MODE.ObjectLiteral && flags.flatten) {
+                output_space_before_token = true;
             }
         }
 
@@ -1050,6 +1056,11 @@
             } else if (flags.last_text === '[' && opt.no_wrapped_reindent) {
                 print_newline();
             }
+
+            if ((flags.last_text === '(' || flags.last_text === ',') && opt.flatten_object_literal_args) {
+                flags.flatten = true;
+            }
+
             set_mode(MODE.BlockStatement);
 
             var empty_braces = is_next('}');

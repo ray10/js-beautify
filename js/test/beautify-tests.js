@@ -417,6 +417,11 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
         bt('function(){return a;}', 'function() {\n    return a;\n}');
         opts.no_wrapped_reindent = false;
 
+        opts.flatten_object_literal_args = true;
+        bt('(z,{a:1,b:2})', '(z, {a: 1, b: 2})');
+        bt('(z,{a:1,b:2},{c:3})', '(z, {a: 1, b: 2}, {c: 3})');
+        opts.flatten_object_literal_args = false;
+
         opts.preserve_newlines = false;
 
         bt('var\na=dont_preserve_newlines;', 'var a = dont_preserve_newlines;');
