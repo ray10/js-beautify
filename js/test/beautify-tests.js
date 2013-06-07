@@ -414,6 +414,7 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify)
         bt('[{a:1,b:2}]', '[\n    {\n        a: 1,\n        b: 2\n    }\n]');
         bt('(z,{a:1,b:2})', '(z, {\n    a: 1,\n    b: 2\n})');
         bt('function(){return a;}', 'function() {\n    return a;\n}');
+        bt('[{a:1,c:3},{b:2}]', '[\n    {\n        a: 1,\n        c: 3\n    },\n    {\n        b: 2\n    }\n]');
         opts.no_wrapped_reindent = false;
 
         opts.flatten_object_literal_args = true;

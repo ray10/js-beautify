@@ -1049,7 +1049,7 @@
         }
 
         function handle_start_block() {
-            if ((flags.last_text === '(' || flags.last_text === ',') && opt.no_wrapped_reindent) {
+            if ((flags.last_text === '(' || flags.last_text === ',' && last_last_text !== '}') && opt.no_wrapped_reindent) {
                 deindent();
             } else if (flags.last_text === '[' && opt.no_wrapped_reindent) {
                 print_newline();
@@ -1086,6 +1086,7 @@
                     if (is_array(previous_flags.mode) && flags.last_text === ',') {
                         if (last_last_text === '}') {
                             // }, { in array context
+                                print_newline();
                             output_space_before_token = true;
                         } else {
                             print_newline(); // [a, b, c, {
