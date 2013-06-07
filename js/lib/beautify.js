@@ -188,6 +188,7 @@
         opt.space_in_paren_collapse_literal = (options.space_in_paren_collapse_literal === undefined) ? false : options.space_in_paren_collapse_literal;
         opt.jslint_happy = (options.jslint_happy === undefined) ? false : options.jslint_happy;
         opt.newline_vars = (options.newline_vars === undefined) ? false : options.newline_vars;
+        opt.newline_brace_in_array = (options.newline_brace_in_array === undefined) ? false : options.newline_brace_in_array;
         opt.keep_array_indentation = (options.keep_array_indentation === undefined) ? false : options.keep_array_indentation;
         opt.space_before_conditional= (options.space_before_conditional === undefined) ? true : options.space_before_conditional;
         opt.unescape_strings = (options.unescape_strings === undefined) ? false : options.unescape_strings;
@@ -1086,7 +1087,6 @@
                     if (is_array(previous_flags.mode) && flags.last_text === ',') {
                         if (last_last_text === '}') {
                             // }, { in array context
-                                print_newline();
                             output_space_before_token = true;
                         } else {
                             print_newline(); // [a, b, c, {
@@ -1098,6 +1098,11 @@
             if (flags.last_text === '(' && opt.space_in_paren_collapse_literal) {
                 output_space_before_token = false;
             }
+
+            if (flags.parent.mode === MODE.ArrayLiteral && flags.last_text === ',' && opt.newline_brace_in_array) {
+                print_newline();
+            }
+
             print_token();
             indent();
         }
